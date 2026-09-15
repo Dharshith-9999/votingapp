@@ -24,8 +24,21 @@ jobs:
                 pip install -r vote/requirements.txt
                 pip install -r result/requirements.txt
                 pip install -r worker/requirements.txt
-            - name: Run Tests
+            - name: Run Vote Tests
+              working-directory: vote
               run: |
-                pytest result/tests vote/tests worker/tests
+                pytest
+            - name: Run result Tests
+              working-directory: result
+              run: |
+                pytest
+            - name: Run worker Tests
+              working-directory: worker
+              run: |
+                pytest
+
+                
+
+                
 
 
