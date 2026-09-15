@@ -1,0 +1,31 @@
+name: votingapp CI
+
+on:
+    push:
+        branches:
+            - main
+
+permissions:
+    contents: read
+
+jobs:
+    build-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+            - name: setup python
+              uses: actions/setup-python@v6
+              with:
+                python-version: '3.12'
+            - name: install dependencies
+              run: |
+                pip install -r vote/requirements.txt
+                pip install -r result/requirements.txt
+                pip install -r worker/requirements.txt
+            - name: Run Tests
+              run: |
+                pytest result/tests vote/tests worker/tests
+
+
