@@ -56,7 +56,24 @@ jobs:
               working-directory: worker
               run: |
                 docker build -t worker .
+    aws-configuration:
+        permissions:
+            id-token: write
+            contents: read
 
+        needs: docker-build
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@v6
+              with:
+                role-to-assume: arn:aws:iam::283609055440:role/Votingapp-Role
+                aws-region: us-east-1
+            - name: verify aws credentials
+              run: |
+                aws sts get-caller-identity
+                
 
 
                 
