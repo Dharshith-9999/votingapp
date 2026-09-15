@@ -65,6 +65,8 @@ jobs:
         runs-on: ubuntu-latest
         
         steps:
+            - name: Check OIDC token claims
+              uses: github/actions-oidc-debugger@main
             - name: configure aws credentials
               uses: aws-actions/configure-aws-credentials@v6
               with:
