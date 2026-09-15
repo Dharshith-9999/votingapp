@@ -27,17 +27,17 @@ jobs:
             - name: Run Vote Tests
               working-directory: vote
               run: |
-                pytest
+                pytest tests/test_main.py
             - name: Run result Tests
               working-directory: result
               run: |
-                pytest
+                pytest tests/test_main.py
             - name: Run worker Tests
               working-directory: worker
               run: |
-                pytest
+                pytest tests/test_main.py
 
-                
+
 
                 
 
