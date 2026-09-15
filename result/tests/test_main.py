@@ -1,6 +1,5 @@
 from app.main import app
 
-
 def test_health_without_database():
 
     client = app.test_client()
