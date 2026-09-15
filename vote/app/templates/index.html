@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Voting Application</title>
+</head>
+
+<body>
+
+    <h1>Voting Application</h1>
+
+    <p>Choose your favorite:</p>
+
+    <button onclick="vote('cats')">
+        Cats
+    </button>
+
+    <button onclick="vote('dogs')">
+        Dogs
+    </button>
+
+    <p id="message"></p>
+
+    <script>
+
+        async function vote(option) {
+
+            const response = await fetch("/api/votes", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    option: option
+                })
+
+            });
+
+            const data = await response.json();
+
+            document.getElementById("message")
+                .innerText = data.message || data.error;
+        }
+
+    </script>
+
+</body>
+
+</html>
