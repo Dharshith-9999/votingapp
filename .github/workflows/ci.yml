@@ -65,8 +65,13 @@ jobs:
         runs-on: ubuntu-latest
         
         steps:
-            - name: Check OIDC token claims
-              uses: github/actions-oidc-debugger@main
+            - name: Show GitHub OIDC information
+              run: |
+                echo "Repository: $GITHUB_REPOSITORY"
+                echo "Repository owner: $GITHUB_REPOSITORY_OWNER"
+                echo "Branch/Ref: $GITHUB_REF"
+                echo "Repository ID: $GITHUB_REPOSITORY_ID"
+                echo "Repository owner ID: $GITHUB_REPOSITORY_OWNER_ID"
             - name: configure aws credentials
               uses: aws-actions/configure-aws-credentials@v6
               with:
