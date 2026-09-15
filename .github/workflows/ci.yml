@@ -37,6 +37,26 @@ jobs:
               run: |
                 pytest tests/test_main.py
 
+    docker-build:
+        needs: build-test
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: checkout
+              uses: actions/checkout@v6
+            - name: Build Result Docker Image
+              working-directory: result
+              run: |
+                docker build -t result .
+            - name: Build App Docker Image
+              working-directory: vote
+              run: |
+                docker build -t vote .
+            - name: Build Worker Docker Image
+              working-directory: worker
+              run: |
+                docker build -t worker .
+
 
 
                 
