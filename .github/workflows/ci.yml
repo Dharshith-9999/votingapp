@@ -38,6 +38,9 @@ jobs:
                 pytest tests/test_main.py
 
     docker-build:
+        permissions:
+            id-token: write
+            contents: read
         needs: build-test
         runs-on: ubuntu-latest
 
@@ -56,15 +59,7 @@ jobs:
               working-directory: worker
               run: |
                 docker build -t worker .
-    aws-configuration:
-        permissions:
-            id-token: write
-            contents: read
 
-        needs: docker-build
-        runs-on: ubuntu-latest
-        
-        steps:
             - name: Show GitHub OIDC information
               run: |
                 echo "Repository: $GITHUB_REPOSITORY"
@@ -72,6 +67,7 @@ jobs:
                 echo "Branch/Ref: $GITHUB_REF"
                 echo "Repository ID: $GITHUB_REPOSITORY_ID"
                 echo "Repository owner ID: $GITHUB_REPOSITORY_OWNER_ID"
+            
             - name: configure aws credentials
               uses: aws-actions/configure-aws-credentials@v6
               with:
@@ -80,8 +76,25 @@ jobs:
             - name: verify aws credentials
               run: |
                 aws sts get-caller-identity
+
             - name: Login to Amazon ECR
               uses: aws-actions/amazon-ecr-login@v2
+            
+            - name: Tag and Push Vote Image
+              run: |
+                docker tag vote 283609055440.dkr.ecr.us-east-1.amazonaws.com/vote:${{ github.sha }}
+                docker push 283609055440.dkr.ecr.us-east-1.amazonaws.com/vote:${{ github.sha }}
+
+            - name: Tag and Push Result Image
+              run: |
+                docker tag result 283609055440.dkr.ecr.us-east-1.amazonaws.com/result:${{ github.sha }}
+                docker push 283609055440.dkr.ecr.us-east-1.amazonaws.com/result:${{ github.sha }}
+
+            - name: Tag and Push Worker Image
+              run: |
+                docker tag worker 283609055440.dkr.ecr.us-east-1.amazonaws.com/worker:${{ github.sha }}
+                docker push 283609055440.dkr.ecr.us-east-1.amazonaws.com/worker:${{ github.sha }}            
+            
                 
 
 
